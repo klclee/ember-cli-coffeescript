@@ -1,6 +1,7 @@
 'use strict';
 var path = require('path');
 var CoffeePreprocessor = require('./lib/coffee-preprocessor');
+var fs   = require('fs');
 
 function CoffeescriptAddon(project) {
   this._project = project;
@@ -9,6 +10,14 @@ function CoffeescriptAddon(project) {
 
 CoffeescriptAddon.prototype.blueprintsPath = function() {
   return path.join(__dirname, 'blueprints');
+};
+
+CoffeescriptAddon.prototype.treeFor = function treeFor(name) {
+  var treePath = path.join('node_modules/ember-cli-coffeescript', name);
+
+  if (fs.existsSync(treePath)) {
+    return unwatchedTree(treePath);
+  }
 };
 
 CoffeescriptAddon.prototype.included = function(app) {
